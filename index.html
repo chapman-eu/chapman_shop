@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chapman Shop — Mini App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Chapman Shop</h1>
+    <div id="cart-summary" class="cart-summary">
+      <button id="open-cart" class="btn">Корзина (<span id="cart-count">0</span>)</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="products" class="products-grid" aria-live="polite"></section>
+
+    <aside id="cart-panel" class="cart-panel hidden" aria-hidden="true">
+      <h2>Ваша корзина</h2>
+
+      <div id="cart-items" class="cart-items" aria-live="polite"></div>
+
+      <div class="cart-total">
+        <div>Итого: <strong id="cart-total-eur">0.00€</strong></div>
+      </div>
+
+      <div class="cart-actions" id="cart-actions">
+        <button id="to-checkout" class="btn primary">Перейти к оплате</button>
+        <button id="close-cart" class="btn">Закрыть</button>
+      </div>
+
+      <!-- Checkout form (hidden until user clicks "Перейти к оплате") -->
+      <form id="checkout-form" class="checkout-form hidden" autocomplete="off" novalidate>
+        <h3>Оформление заказа</h3>
+
+        <label>Имя (покупателя) <input id="field-name" name="name" required></label>
+        <label>Ник в Telegram <input id="field-nick" name="nick" required placeholder="@nickname"></label>
+
+        <label>Способ оплаты
+          <select id="field-payment" name="payment" required>
+            <option value="cash">Наличка</option>
+            <option value="card">Карта</option>
+          </select>
+        </label>
+
+        <label>Способ получения
+          <select id="field-fulfill" name="fulfill" required>
+            <option value="delivery">Доставка (+5€)</option>
+            <option value="pickup">Самовывоз</option>
+          </select>
+        </label>
+
+        <!-- Delivery fields -->
+        <div id="delivery-fields" class="subform hidden">
+          <label>Имя получателя <input id="field-rec-first" name="rec_first"></label>
+          <label>Фамилия <input id="field-rec-last" name="rec_last"></label>
+          <label>Улица <input id="field-street" name="street"></label>
+          <label>Номер дома <input id="field-house" name="house"></label>
+          <label>Postcode <input id="field-postcode" name="postcode"></label>
+          <label>Город <input id="field-city" name="city"></label>
+          <label>Email <input id="field-email" name="email" type="email"></label>
+        </div>
+
+        <!-- Pickup fields -->
+        <div id="pickup-fields" class="subform hidden">
+          <label>Город самовывоза
+            <select id="field-pickup-city" name="pickup_city" required>
+              <option value="">— Выберите город —</option>
+              <option value="Rotterdam">Rotterdam — Роттердам</option>
+              <option value="Utrecht">Utrecht — Утрехт</option>
+              <option value="Den Haag">Den Haag — Гаага</option>
+              <option value="Amsterdam">Amsterdam — Амстердам</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Комментарий к заказу <textarea id="field-note" rows="3"></textarea></label>
+
+        <div class="form-total">
+          <div>Товары: <span id="form-total-items">0</span></div>
+          <div>Доставка: <span id="form-delivery-fee">0.00€</span></div>
+          <div><strong>Итого: <span id="form-total-eur">0.00€</span></strong></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="submit-order" class="btn primary">Подтвердить и отправить</button>
+          <button type="button" id="cancel-order" class="btn">Отмена</button>
+        </div>
+      </form>
+
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <small>© Chapman Shop</small>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+
+/* Chapman Shop — frontend logic
+   - PRODUCTS list (10 items)
+   - Renders cards (3 per row via CSS)
+   - CART in memory
+   - +/− controls, cart view showing "Название x{qty} — {subtotal}€" and "Итого: {total}€"
+   - Checkout form with required fields and behavior depending on Delivery/Pickup
+   - sendOrderToBackend posts to Vercel: `${VERCEL_API_BASE}/api/sendOrder`
+   - Supports Telegram.WebApp.sendData if available (SEND_MODE control)
+   - "Что происходит в корзине" — см. README; основные правила отражены в коде
+*/
+
+const DELIVERY_FEE = 5.00;
+
+// PRODUCTS (точно 10 товаров, как в вашем списке)
+const PRODUCTS = [
+  { id: "p1",  name: "Chapman Compact Cherry",         price: 13.5, img: "img/compact_cherry.png" },
+  { id: "p2",  name: "Chapman Compact Brown",          price: 11,   img: "img/compact_brown.png" },
+  { id: "p3",  name: "Chapman Slims Vanilla",          price: 13,   img: "img/slims_vanilla.png" },
+  { id: "p4",  name: "Chapman Slims IceBerry",         price: 13,   img: "img/slims_iceberry.png" },
+  { id: "p5",  name: "Chapman Slims Green",            price: 13,   img: "img/slims_green.png" },
+  { id: "p6",  name: "Chapman Compact Cherry (x10)",   price: 115,  img: "img/compact_cherry_x10.png" },
+  { id: "p7",  name: "Chapman Compact Brown (x10)",    price: 100,  img: "img/compact_brown_x10.png" },
+  { id: "p8",  name: "Chapman Slims Vanilla (x10)",    price: 120,  img: "img/slims_vanilla_x10.png" },
+  { id: "p9",  name: "Chapman Slims IceBerry (x10)",   price: 120,  img: "img/slims_iceberry_x10.png" },
+  { id: "p10", name: "Chapman Slims Green (x10)",      price: 120,  img: "img/slims_green_x10.png" }
+];
+
+// Placeholder: replace with your deployed Vercel project URL (no trailing slash)
+const VERCEL_API_BASE = "https://<VERCEL_URL>"; // <- REPLACE THIS
+
+// SEND_MODE: 'auto' uses WebApp.sendData when available, otherwise backend
+// 'webapp' forces sendData, 'backend' forces fetch to Vercel
+let SEND_MODE = 'auto'; // 'auto' | 'backend' | 'webapp'
+
+/* CART structure:
+   items: { [productId]: { product, qty } }
+   totalItems, totalEUR
+*/
+const CART = { items: {}, totalItems: 0, totalEUR: 0 };
+
+function $(sel){ return document.querySelector(sel) }
+function $all(sel){ return Array.from(document.querySelectorAll(sel)) }
+
+function formatEUR(v){ return v.toFixed(2) + "€"; }
+
+/* RENDER PRODUCTS */
+function renderProducts(){
+  const container = $('#products');
+  container.innerHTML = '';
+  PRODUCTS.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${p.img}" alt="${escapeHtml(p.name)}">
+      <div class="meta">
+        <div class="title">${escapeHtml(p.name)}</div>
+        <div class="price">${formatEUR(p.price)}</div>
+      </div>
+      <div class="controls">
+        <div class="qty-controls">
+          <button class="btn dec" data-id="${p.id}">−</button>
+          <div class="qty" id="qty-${p.id}">0</div>
+          <button class="btn inc" data-id="${p.id}">+</button>
+        </div>
+        <button class="btn primary add" data-id="${p.id}">Добавить</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // attach listeners
+  $all('.inc').forEach(b=>b.addEventListener('click', e=>{ addToCart(e.currentTarget.dataset.id,1) }));
+  $all('.dec').forEach(b=>b.addEventListener('click', e=>{ addToCart(e.currentTarget.dataset.id,-1) }));
+  $all('.add').forEach(b=>b.addEventListener('click', e=>{ addToCart(e.currentTarget.dataset.id,1) }));
+}
+
+/* Utilities */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]) }
+
+/* CART OPERATIONS */
+function addToCart(productId, delta){
+  const product = PRODUCTS.find(p=>p.id===productId);
+  if(!product) return;
+  const entry = CART.items[productId] || { product, qty:0 };
+  entry.qty = Math.max(0, entry.qty + delta);
+  if(entry.qty === 0) delete CART.items[productId];
+  else CART.items[productId] = entry;
+  recalcCart();
+  updateUIForProduct(productId);
+  renderCartItems();
+  updateFormTotalsIfVisible();
+}
+
+function recalcCart(){
+  let totalItems = 0, totalEUR = 0;
+  Object.values(CART.items).forEach(e=>{
+    totalItems += e.qty;
+    totalEUR += e.qty * e.product.price;
+  });
+  CART.totalItems = totalItems;
+  CART.totalEUR = totalEUR;
+  const delivery = effectiveDeliveryFee();
+  const displayedTotal = +(totalEUR + delivery).toFixed(2);
+  $('#cart-count').textContent = totalItems;
+  if($('#cart-total-eur')) $('#cart-total-eur').textContent = formatEUR(displayedTotal);
+  if($('#form-total-items')) $('#form-total-items').textContent = totalItems;
+  if($('#form-total-eur')) $('#form-total-eur').textContent = formatEUR(displayedTotal);
+  if($('#form-delivery-fee')) $('#form-delivery-fee').textContent = formatEUR(delivery);
+}
+
+function effectiveDeliveryFee(){
+  const select = $('#field-fulfill');
+  if(select) return select.value === 'delivery' ? DELIVERY_FEE : 0;
+  const checked = document.querySelector('input[name="fulfill"]:checked');
+  return checked && checked.value === 'delivery' ? DELIVERY_FEE : 0;
+}
+
+function updateUIForProduct(productId){
+  const qtyElem = document.getElementById(`qty-${productId}`);
+  const entry = CART.items[productId];
+  if(qtyElem) qtyElem.textContent = entry ? entry.qty : 0;
+}
+
+/* RENDER CART ITEMS: lines "Название x{qty} — {subtotal}€" */
+function renderCartItems(){
+  const container = $('#cart-items');
+  container.innerHTML = '';
+  if(Object.keys(CART.items).length === 0){
+    container.innerHTML = '<div style="color:var(--muted)">Корзина пуста</div>';
+    return;
+  }
+  Object.values(CART.items).forEach(e=>{
+    const row = document.createElement('div');
+    row.className = 'cart-item';
+    row.innerHTML = `
+      <img src="${e.product.img}" alt="${escapeHtml(e.product.name)}" />
+      <div style="flex:1">
+        <div style="font-weight:700">${escapeHtml(e.product.name)}</div>
+        <div class="muted">${escapeHtml(e.product.name)} x${e.qty} — ${formatEUR(e.product.price * e.qty)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+        <div class="qty-controls">
+          <button class="btn dec-small" data-id="${e.product.id}">−</button>
+          <div style="min-width:28px;text-align:center">${e.qty}</div>
+          <button class="btn inc-small" data-id="${e.product.id}">+</button>
+        </div>
+        <div style="font-weight:700">${formatEUR(e.product.price * e.qty)}</div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  $all('.inc-small').forEach(b=>b.addEventListener('click', e=>addToCart(e.currentTarget.dataset.id,1)));
+  $all('.dec-small').forEach(b=>b.addEventListener('click', e=>addToCart(e.currentTarget.dataset.id,-1)));
+}
+
+/* CHECKOUT / FORM handling */
+
+/* gather order including customer data and address/pickup */
+function gatherOrderWithCustomer(){
+  const items = Object.values(CART.items).map(e=>({
+    id: e.product.id,
+    name: e.product.name,
+    qty: e.qty,
+    unit: e.product.price,
+    subtotal: +(e.qty * e.product.price).toFixed(2)
+  }));
+
+  const name = $('#field-name') ? $('#field-name').value.trim() : '';
+  const nick = $('#field-nick') ? $('#field-nick').value.trim() : '';
+  const payment = $('#field-payment') ? $('#field-payment').value : '';
+  const fulfill = $('#field-fulfill') ? $('#field-fulfill').value : 'pickup';
+  const note = $('#field-note') ? $('#field-note').value.trim() : '';
+  const deliveryCost = (fulfill === 'delivery') ? DELIVERY_FEE : 0.00;
+  const total = +(CART.totalEUR + deliveryCost).toFixed(2);
+
+  const address = {};
+  if(fulfill === 'delivery'){
+    address.rec_first = $('#field-rec-first') ? $('#field-rec-first').value.trim() : '';
+    address.rec_last  = $('#field-rec-last') ? $('#field-rec-last').value.trim() : '';
+    address.street    = $('#field-street') ? $('#field-street').value.trim() : '';
+    address.house     = $('#field-house') ? $('#field-house').value.trim() : '';
+    address.postcode  = $('#field-postcode') ? $('#field-postcode').value.trim() : '';
+    address.city      = $('#field-city') ? $('#field-city').value.trim() : '';
+    address.email     = $('#field-email') ? $('#field-email').value.trim() : '';
+  } else {
+    address.pickup_city = $('#field-pickup-city') ? $('#field-pickup-city').value : '';
+  }
+
+  return {
+    items,
+    customer: { name, nick, payment },
+    fulfill,
+    address,
+    deliveryCost,
+    total,
+    note,
+    createdAt: (new Date()).toISOString()
+  };
+}
+
+/* Create readable orderText for admin (HTML) */
+function makeOrderText(order){
+  const c = order.customer || {};
+  const a = order.address || {};
+  const lines = [];
+  lines.push(`<b>Новый заказ — Chapman Shop</b>`);
+  lines.push(`⏱ ${order.createdAt}`);
+  lines.push('');
+  lines.push(`<b>Клиент:</b> ${escapeHtml(c.name || '—')}`);
+  lines.push(`<b>Ник:</b> ${escapeHtml(c.nick || '—')}`);
+  lines.push(`<b>Оплата:</b> ${escapeHtml(c.payment || '—')}`);
+  lines.push(`<b>Получение:</b> ${escapeHtml(order.fulfill)}`);
+  if(order.fulfill === 'delivery'){
+    lines.push(`<b>Адрес доставки:</b> ${escapeHtml(a.rec_first || '')} ${escapeHtml(a.rec_last || '')}, ${escapeHtml(a.street || '')} ${escapeHtml(a.house || '')}, ${escapeHtml(a.postcode || '')} ${escapeHtml(a.city || '')}`);
+    lines.push(`<b>Email:</b> ${escapeHtml(a.email || '')}`);
+  } else {
+    lines.push(`<b>Самовывоз в городе:</b> ${escapeHtml(a.pickup_city || '')}`);
+  }
+  lines.push('');
+  lines.push('<b>Состав заказа:</b>');
+  order.items.forEach(it=>{
+    lines.push(`${escapeHtml(it.name)} — x${it.qty} — ${formatEUR(it.subtotal)}`);
+  });
+  if(order.deliveryCost) lines.push(`Доставка: ${formatEUR(order.deliveryCost)}`);
+  lines.push(`<b>Итого: ${formatEUR(order.total)}</b>`);
+  if(order.note) lines.push(`\nКомментарий: ${escapeHtml(order.note)}`);
+  lines.push('\n---\n');
+  return lines.join('\n');
+}
+
+/* Send via Vercel backend */
+async function sendOrderToBackend(orderText){
+  try{
+    const resp = await fetch(`${VERCEL_API_BASE}/api/sendOrder`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ order: orderText, source: 'web' })
+    });
+    return await resp.json();
+  }catch(err){
+    return { error: String(err) };
+  }
+}
+
+/* Dispatch: WebApp.sendData or backend (fetch) */
+async function dispatchOrder(orderObj){
+  const orderText = makeOrderText(orderObj);
+  // If forced to webapp or auto-detect
+  if(SEND_MODE === 'webapp' || (SEND_MODE === 'auto' && window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function')){
+    try{
+      // For WebApp path, send structured payload to bot via sendData
+      window.Telegram.WebApp.sendData(JSON.stringify({ type:'order', payload: orderObj }));
+      return { ok:true, via:'webapp' };
+    }catch(err){
+      console.warn('WebApp.sendData failed, falling back to backend', err);
+    }
+  }
+  // Default: backend
+  const res = await sendOrderToBackend(orderText);
+  return res;
+}
+
+/* Validation */
+function showError(msg){ alert(msg) }
+
+function validateCheckoutForm(){
+  const nameEl = $('#field-name');
+  const nickEl = $('#field-nick');
+  const paymentEl = $('#field-payment');
+  const fulfillEl = $('#field-fulfill');
+  if(!nameEl || !nickEl || !paymentEl || !fulfillEl){
+    showError('Форма оформления не загружена корректно.');
+    return false;
+  }
+  const name = nameEl.value.trim();
+  const nick = nickEl.value.trim();
+  const payment = paymentEl.value;
+  const fulfill = fulfillEl.value;
+  if(!name){ showError('Пожалуйста, укажите ваше имя.'); nameEl.focus(); return false; }
+  if(!nick){ showError('Пожалуйста, укажите ваш ник в Telegram.'); nickEl.focus(); return false; }
+  if(!payment){ showError('Выберите способ оплаты.'); paymentEl.focus(); return false; }
+  if(!fulfill){ showError('Выберите способ получения.'); fulfillEl.focus(); return false; }
+
+  if(fulfill === 'delivery'){
+    const recFirst = $('#field-rec-first').value.trim();
+    const recLast  = $('#field-rec-last').value.trim();
+    const street   = $('#field-street').value.trim();
+    const house    = $('#field-house').value.trim();
+    const postcode = $('#field-postcode').value.trim();
+    const city     = $('#field-city').value.trim();
+    const email    = $('#field-email').value.trim();
+    if(!recFirst){ showError('Введите имя получателя.'); $('#field-rec-first').focus(); return false; }
+    if(!recLast){ showError('Введите фамилию получателя.'); $('#field-rec-last').focus(); return false; }
+    if(!street){ showError('Введите улицу.'); $('#field-street').focus(); return false; }
+    if(!house){ showError('Введите номер дома.'); $('#field-house').focus(); return false; }
+    if(!postcode){ showError('Введите Postcode.'); $('#field-postcode').focus(); return false; }
+    if(!city){ showError('Введите город.'); $('#field-city').focus(); return false; }
+    if(!email){ showError('Введите email.'); $('#field-email').focus(); return false; }
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRe.test(email)){ showError('Введите корректный email.'); $('#field-email').focus(); return false; }
+  } else {
+    const val = $('#field-pickup-city') ? $('#field-pickup-city').value : '';
+    if(!val){ showError('Пожалуйста, выберите город самовывоза.'); if($('#field-pickup-city')) $('#field-pickup-city').focus(); return false; }
+  }
+
+  if(CART.totalItems === 0){ showError('Корзина пуста. Добавьте товар.'); return false; }
+
+  return true;
+}
+
+/* Form UI show/hide */
+function openCheckoutForm(){
+  const form = $('#checkout-form');
+  if(!form) return;
+  $('#cart-actions').classList.add('hidden');
+  form.classList.remove('hidden');
+  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  syncFormFieldsVisibility();
+  updateFormTotalsIfVisible();
+}
+
+function closeCheckoutForm(){
+  const form = $('#checkout-form');
+  if(!form) return;
+  form.classList.add('hidden');
+  $('#cart-actions').classList.remove('hidden');
+}
+
+function syncFormFieldsVisibility(){
+  const fulfillEl = $('#field-fulfill');
+  if(!fulfillEl) return;
+  const val = fulfillEl.value;
+  const deliveryBlock = $('#delivery-fields');
+  const pickupBlock = $('#pickup-fields');
+  if(val === 'delivery'){
+    if(deliveryBlock) deliveryBlock.classList.remove('hidden');
+    if(pickupBlock) pickupBlock.classList.add('hidden');
+    setRequired('#delivery-fields input', true);
+    setRequired('#pickup-fields select', false);
+  } else {
+    if(deliveryBlock) deliveryBlock.classList.add('hidden');
+    if(pickupBlock) pickupBlock.classList.remove('hidden');
+    setRequired('#delivery-fields input', false);
+    setRequired('#pickup-fields select', true);
+  }
+  recalcCart();
+  updateFormTotalsIfVisible();
+}
+
+function setRequired(selector, required){
+  const nodeList = document.querySelectorAll(selector);
+  nodeList.forEach(n=>{ if(required) n.setAttribute('required','required'); else n.removeAttribute('required'); });
+}
+
+function updateFormTotalsIfVisible(){
+  const form = $('#checkout-form');
+  if(!form || form.classList.contains('hidden')) return;
+  const delivery = effectiveDeliveryFee();
+  if($('#form-total-items')) $('#form-total-items').textContent = CART.totalItems;
+  if($('#form-delivery-fee')) $('#form-delivery-fee').textContent = formatEUR(delivery);
+  if($('#form-total-eur')) $('#form-total-eur').textContent = formatEUR(+(CART.totalEUR + delivery).toFixed(2));
+}
+
+/* Submit order */
+async function handleSubmitOrder(){
+  if(!validateCheckoutForm()) return;
+  const orderObj = gatherOrderWithCustomer();
+  const preview = buildPreviewText(orderObj);
+  if(!confirm(preview + "\n\nОтправить заказ?")) return;
+
+  const submitBtn = $('#submit-order');
+  submitBtn.disabled = true;
+  try{
+    const res = await dispatchOrder(orderObj);
+    if(res && res.ok){
+      alert('Заказ успешно отправлен. Спасибо!');
+      clearCart();
+      closeCheckoutForm();
+      showCart(false);
+    } else {
+      const msg = res && res.error ? res.error : 'Ошибка отправки';
+      showError('Не удалось отправить заказ: ' + msg);
+    }
+  }catch(err){
+    showError('Ошибка при отправке заказа: ' + String(err));
+  }finally{
+    submitBtn.disabled = false;
+  }
+}
+
+function buildPreviewText(order){
+  const lines = [];
+  lines.push('Проверьте заказ:');
+  lines.push(`Клиент: ${order.customer.name} (${order.customer.nick})`);
+  lines.push(`Оплата: ${order.customer.payment}`);
+  lines.push(`Получение: ${order.fulfill}`);
+  if(order.fulfill === 'delivery'){
+    const a = order.address;
+    lines.push(`Адрес: ${a.rec_first} ${a.rec_last}, ${a.street} ${a.house}, ${a.postcode} ${a.city}`);
+    lines.push(`Email: ${a.email}`);
+  } else {
+    lines.push(`Самовывоз: ${order.address.pickup_city || '—'}`);
+  }
+  lines.push('Состав:');
+  order.items.forEach(it=> lines.push(` - ${it.name} x${it.qty} = ${formatEUR(it.subtotal)}`));
+  if(order.deliveryCost) lines.push(`Доставка: ${formatEUR(order.deliveryCost)}`);
+  lines.push(`Итого: ${formatEUR(order.total)}`);
+  if(order.note) lines.push(`Комментарий: ${order.note}`);
+  return lines.join('\n');
+}
+
+/* UI hooks and initialization */
+function setupUI(){
+  renderProducts();
+  renderCartItems();
+  recalcCart();
+
+  $('#open-cart').addEventListener('click', ()=>{ showCart(true) });
+  $('#close-cart').addEventListener('click', ()=>{ showCart(false) });
+
+  const toCheckout = $('#to-checkout') || $('#checkout');
+  if(toCheckout) toCheckout.addEventListener('click', ()=>{
+    if(CART.totalItems === 0){ alert('Добавьте товар в корзину'); return; }
+    openCheckoutForm();
+  });
+
+  const fulfillSelect = $('#field-fulfill');
+  if(fulfillSelect) fulfillSelect.addEventListener('change', syncFormFieldsVisibility);
+
+  const submitBtn = $('#submit-order');
+  if(submitBtn) submitBtn.addEventListener('click', handleSubmitOrder);
+
+  const cancelBtn = $('#cancel-order');
+  if(cancelBtn) cancelBtn.addEventListener('click', ()=>{ closeCheckoutForm(); });
+
+  $all('input[name="fulfill"]').forEach(i=>i.addEventListener('change', recalcCart));
+
+  $('#close-cart').addEventListener('click', ()=>{
+    closeCheckoutForm();
+    showCart(false);
+  });
+
+  syncFormFieldsVisibility();
+  updateFormTotalsIfVisible();
+}
+
+function showCart(show){
+  const panel = $('#cart-panel');
+  if(show){
+    panel.classList.remove('hidden');
+    panel.setAttribute('aria-hidden','false');
+  }else{
+    panel.classList.add('hidden');
+    panel.setAttribute('aria-hidden','true');
+  }
+}
+
+function clearCart(){
+  CART.items = {};
+  CART.totalItems = 0;
+  CART.totalEUR = 0;
+  if($('#field-note')) $('#field-note').value = '';
+  if($('#customer-note')) $('#customer-note').value = '';
+  if($('#checkout-form')) {
+    const form = $('#checkout-form');
+    form.querySelectorAll('input, textarea, select').forEach(el=>{
+      if(el.type === 'select-one') {
+        if(el.id === 'field-payment') el.value = el.querySelector('option') ? el.querySelector('option').value : '';
+        if(el.id === 'field-fulfill') el.value = 'delivery';
+        else el.value = '';
+      } else {
+        el.value = '';
+      }
+    });
+  }
+  recalcCart();
+  renderCartItems();
+  PRODUCTS.forEach(p=>updateUIForProduct(p.id));
+}
+
+/* Init */
+document.addEventListener('DOMContentLoaded', ()=>{
+  setupUI();
+});
+
+/* Expose for debugging/testing */
+window.CHAPMAN = { PRODUCTS, CART, addToCart, gatherOrderWithCustomer, dispatchOrder, setSendMode: (m)=>{ SEND_MODE = m } };
+
+/* End of script.js */
