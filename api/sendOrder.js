@@ -1,11 +1,16 @@
 // filename: api/sendOrder.js
 // Vercel Serverless Function (Node.js 18+)
 // Endpoint: POST /api/sendOrder
-// Expects JSON body: { order } or { orderText, source }
-// Environment vars required: BOT_TOKEN, ADMIN_ID
-// Optional: WEBHOOK_SECRET — if set, requests must include header 'x-webhook-secret' === WEBHOOK_SECRET
 
 export default async function handler(req, res) {
+  // === CORS headers ===
+  res.setHeader('Access-Control-Allow-Origin', '*'); // можно ограничить на https://chapman-eu.github.io
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,x-webhook-secret');
+
+  // Preflight
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -54,6 +59,7 @@ export default async function handler(req, res) {
     const data = await r.json();
     console.log('Order sent to admin via Telegram. source=', source);
     return res.status(200).json({ ok: true, telegram: data });
+
   } catch (err) {
     console.error('sendOrder error', err);
     return res.status(500).json({ error: String(err) });
