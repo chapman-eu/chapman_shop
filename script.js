@@ -27,7 +27,7 @@ const PRODUCTS = [
 ];
 
 // Placeholder: replace with your deployed Vercel project URL (no trailing slash)
-const VERCEL_API_BASE = "https://<VERCEL_URL>"; // <- REPLACE THIS
+const VERCEL_API_BASE = "https://chapman-shop.vercel.app"; // <- REPLACE THIS
 
 // SEND_MODE: 'auto' uses WebApp.sendData when available, otherwise backend
 // 'webapp' forces sendData, 'backend' forces fetch to Vercel
