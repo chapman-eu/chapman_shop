@@ -330,10 +330,15 @@ async function applyPromo() {
 
   try {
     const res = await fetch(`${VERCEL_API_BASE}/api/apply-promo`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
-    });
+  method: 'POST',
+  mode: 'cors',
+  credentials: 'omit',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ code })
+});
+
 
     const data = await res.json();
 
