@@ -42,3 +42,8 @@ export default async function handler(req, res) {
     value: promo.value
   });
 }
+console.log(
+  'PROMO typeof:',
+  typeof process.env.PROMO_CODES_JSON,
+  process.env.PROMO_CODES_JSON
+);
