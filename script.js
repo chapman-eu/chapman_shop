@@ -54,11 +54,30 @@ let SEND_MODE = 'auto'; // 'auto' | 'backend' | 'webapp'
    totalItems, totalEUR
 */
 const CART = { items: {}, totalItems: 0, totalEUR: 0 };
+let appliedPromo = null;
+
 
 function $(sel){ return document.querySelector(sel) }
 function $all(sel){ return Array.from(document.querySelectorAll(sel)) }
 
 function formatEUR(v){ return v.toFixed(2) + "€"; }
+
+function applyPromoDiscount(sum) {
+  if (!appliedPromo) return sum;
+
+  let discounted = sum;
+
+  if (appliedPromo.type === 'percent') {
+    discounted -= discounted * (appliedPromo.value / 100);
+  }
+
+  if (appliedPromo.type === 'fixed') {
+    discounted -= appliedPromo.value;
+  }
+
+  return Math.max(0, +discounted.toFixed(2));
+}
+
 
 /* RENDER PRODUCTS */
 function renderProducts(){
@@ -136,7 +155,12 @@ function recalcCart(){
   CART.totalItems = totalItems;
   CART.totalEUR = totalEUR;
   const delivery = effectiveDeliveryFee();
-  const displayedTotal = +(totalEUR + delivery).toFixed(2);
+
+  let sumWithDelivery = totalEUR + delivery;
+  sumWithDelivery = applyPromoDiscount(sumWithDelivery);
+
+  const displayedTotal = +sumWithDelivery.toFixed(2);
+
   $('#cart-count').textContent = totalItems;
   if($('#cart-total-eur')) $('#cart-total-eur').textContent = formatEUR(displayedTotal);
   if($('#form-total-items')) $('#form-total-items').textContent = totalItems;
@@ -208,7 +232,9 @@ function gatherOrderWithCustomer(){
   const fulfill = $('#field-fulfill') ? $('#field-fulfill').value : 'pickup';
   const note = $('#field-note') ? $('#field-note').value.trim() : '';
   const deliveryCost = (fulfill === 'delivery') ? DELIVERY_FEE : 0.00;
-  const total = +(CART.totalEUR + deliveryCost).toFixed(2);
+  let total = applyPromoDiscount(CART.totalEUR) + deliveryCost;
+
+
 
   const address = {};
   if(fulfill === 'delivery'){
@@ -231,7 +257,11 @@ function gatherOrderWithCustomer(){
     deliveryCost,
     total,
     note,
-    createdAt: (new Date()).toISOString()
+    createdAt: (new Date()).toISOString(),
+    promo: appliedPromo
+  ? { code: appliedPromo.code, type: appliedPromo.type, value: appliedPromo.value }
+  : null,
+
   };
 }
 
@@ -259,10 +289,63 @@ function makeOrderText(order){
     lines.push(`${escapeHtml(it.name)} — x${it.qty} — ${formatEUR(it.subtotal)}`);
   });
   if(order.deliveryCost) lines.push(`Доставка: ${formatEUR(order.deliveryCost)}`);
+  if (order.promo) {
+  lines.push(
+    `Промокод: ${escapeHtml(order.promo.code)} (${order.promo.type === 'percent'
+      ? `-${order.promo.value}%`
+      : `-${formatEUR(order.promo.value)}`
+    })`
+  );
+}
+
   lines.push(`<b>Итого: ${formatEUR(order.total)}</b>`);
   if(order.note) lines.push(`\nКомментарий: ${escapeHtml(order.note)}`);
   lines.push('\n---\n');
   return lines.join('\n');
+}
+//promo function
+async function applyPromo() {
+  const input = document.getElementById('promo-input');
+  const msg = document.getElementById('promo-message');
+
+  const code = input.value.trim().toUpperCase();
+  if (!code) return;
+
+  msg.textContent = 'Проверяем промокод…';
+  msg.className = 'promo-message';
+
+  try {
+    const res = await fetch('/api/apply-promo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.error || 'Неверный промокод';
+      msg.classList.add('error');
+      return;
+    }
+
+    appliedPromo = data;
+
+    msg.textContent = `Промокод ${code} применён`;
+    msg.classList.add('success');
+
+    // блокируем повторное применение
+    input.disabled = true;
+    document.getElementById('apply-promo-btn').disabled = true;
+
+    recalcCart();
+  renderCartItems();
+  updateFormTotalsIfVisible();
+
+  } catch (e) {
+    msg.textContent = 'Ошибка сервера';
+    msg.classList.add('error');
+  }
 }
 
 /* Send via Vercel backend */
@@ -395,7 +478,12 @@ function updateFormTotalsIfVisible(){
   const delivery = effectiveDeliveryFee();
   if($('#form-total-items')) $('#form-total-items').textContent = CART.totalItems;
   if($('#form-delivery-fee')) $('#form-delivery-fee').textContent = formatEUR(delivery);
-  if($('#form-total-eur')) $('#form-total-eur').textContent = formatEUR(+(CART.totalEUR + delivery).toFixed(2));
+  let total = CART.totalEUR + delivery;
+total = applyPromoDiscount(total);
+
+if($('#form-total-eur'))
+  $('#form-total-eur').textContent = formatEUR(total);
+
 }
 
 /* Submit order */
@@ -454,6 +542,10 @@ function setupUI(){
 
   $('#open-cart').addEventListener('click', ()=>{ showCart(true) });
   $('#close-cart').addEventListener('click', ()=>{ showCart(false) });
+  const promoBtn = document.getElementById('apply-promo-btn');
+  if (promoBtn) {
+    promoBtn.addEventListener('click', applyPromo);
+  }
 
   const toCheckout = $('#to-checkout') || $('#checkout');
   if(toCheckout) toCheckout.addEventListener('click', ()=>{
@@ -513,6 +605,16 @@ function clearCart(){
   recalcCart();
   renderCartItems();
   PRODUCTS.forEach(p=>updateUIForProduct(p.id));
+  appliedPromo = null;
+
+const promoInput = document.getElementById('promo-input');
+const promoBtn = document.getElementById('apply-promo-btn');
+const promoMsg = document.getElementById('promo-message');
+
+if (promoInput) promoInput.disabled = false;
+if (promoBtn) promoBtn.disabled = false;
+if (promoMsg) promoMsg.textContent = '';
+
 }
 
 /* Init */

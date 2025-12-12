@@ -25,6 +25,20 @@
       <div class="cart-total">
         <div>Итого: <strong id="cart-total-eur">0.00€</strong></div>
       </div>
+        <!-- Promo code -->
+        <div class="promo-block">
+          <label for="promo-input">Промокод</label>
+          <div class="promo-row">
+            <input
+              id="promo-input"
+              type="text"
+              placeholder="Введите код"
+              autocomplete="off"
+            />
+            <button id="apply-promo-btn" class="btn">Применить</button>
+          </div>
+          <div id="promo-message" class="promo-message" aria-live="polite"></div>
+        </div>
 
       <div class="cart-actions" id="cart-actions">
         <button id="to-checkout" class="btn primary">Перейти к оплате</button>

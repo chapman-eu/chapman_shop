@@ -234,3 +234,28 @@ h1{margin:0;font-size:1.25rem;letter-spacing:0.6px}
 }
 
 
+.promo-block {
+  margin: 12px 0;
+}
+
+.promo-row {
+  display: flex;
+  gap: 8px;
+}
+
+.promo-row input {
+  flex: 1;
+}
+
+.promo-message {
+  margin-top: 6px;
+  font-size: 0.9em;
+}
+
+.promo-message.success {
+  color: #2e7d32;
+}
+
+.promo-message.error {
+  color: #c62828;
+}

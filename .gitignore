@@ -1,2 +1,14 @@
-.vercel
-.env*.local
+# Node
+node_modules/
+
+# Vercel
+.vercel/
+
+# Env files (НИКОГДА не коммитим)
+.env
+.env.*
+!.env.example
+
+# OS / Editor
+.DS_Store
+.vscode/
