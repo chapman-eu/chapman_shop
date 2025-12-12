@@ -12,19 +12,36 @@
 
 const DELIVERY_FEE = 5.00;
 
-// PRODUCTS (точно 10 товаров, как в вашем списке)
+// PRODUCTS
 const PRODUCTS = [
-  { id: "p1",  name: "Chapman Compact Cherry",         price: 13.5, img: "img/compact_cherry.png" },
-  { id: "p2",  name: "Chapman Compact Brown",          price: 11,   img: "img/compact_brown.png" },
-  { id: "p3",  name: "Chapman Slims Vanilla",          price: 13,   img: "img/slims_vanilla.png" },
-  { id: "p4",  name: "Chapman Slims IceBerry",         price: 13,   img: "img/slims_iceberry.png" },
-  { id: "p5",  name: "Chapman Slims Green",            price: 13,   img: "img/slims_green.png" },
-  { id: "p6",  name: "Chapman Compact Cherry (x10)",   price: 115,  img: "img/compact_cherry_x10.png" },
-  { id: "p7",  name: "Chapman Compact Brown (x10)",    price: 100,  img: "img/compact_brown_x10.png" },
-  { id: "p8",  name: "Chapman Slims Vanilla (x10)",    price: 120,  img: "img/slims_vanilla_x10.png" },
-  { id: "p9",  name: "Chapman Slims IceBerry (x10)",   price: 120,  img: "img/slims_iceberry_x10.png" },
-  { id: "p10", name: "Chapman Slims Green (x10)",      price: 120,  img: "img/slims_green_x10.png" }
+  // CHERRY
+  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
+  { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 13,   img: "img/slims_cherry.png",          inStock: true, isNew: true },
+  { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 115,  img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
+  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 120,  img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
+
+  // BROWN
+  { id: "brown-compact-single",   name: "Chapman Compact Brown",         price: 11,   img: "img/compact_brown.png",         inStock: true, isNew: false },
+  { id: "brown-compact-x10",      name: "Chapman Compact Brown (x10)",   price: 100,  img: "img/compact_brown_x10.png",     inStock: true, isNew: false },
+
+  // GRAPE
+  { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 12.5, img: "img/compact_grape.png",         inStock: true, isNew: true },
+  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 110,  img: "img/compact_grape_x10.png",     inStock: true, isNew: true },
+
+  // VANILLA
+  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 13,   img: "img/slims_vanilla.png",         inStock: true, isNew: false },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 120,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: false },
+
+  // ICEBERRY
+  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 13,   img: "img/slims_iceberry.png",        inStock: true, isNew: false },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 120,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: false },
+
+  // GREEN
+  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 13,   img: "img/slims_green.png",           inStock: true, isNew: false },
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 120,  img: "img/slims_green_x10.png",       inStock: true, isNew: false }
 ];
+
+
 
 // Placeholder: replace with your deployed Vercel project URL (no trailing slash)
 const VERCEL_API_BASE = "https://chapman-shop.vercel.app"; // <- REPLACE THIS
@@ -51,21 +68,34 @@ function renderProducts(){
   PRODUCTS.forEach(p=>{
     const card = document.createElement('article');
     card.className = 'card';
-    card.innerHTML = `
-      <img src="${p.img}" alt="${escapeHtml(p.name)}">
-      <div class="meta">
-        <div class="title">${escapeHtml(p.name)}</div>
-        <div class="price">${formatEUR(p.price)}</div>
-      </div>
-      <div class="controls">
-        <div class="qty-controls">
-          <button class="btn dec" data-id="${p.id}">−</button>
-          <div class="qty" id="qty-${p.id}">0</div>
-          <button class="btn inc" data-id="${p.id}">+</button>
-        </div>
-        <button class="btn primary add" data-id="${p.id}">Добавить</button>
-      </div>
-    `;
+    const disabled = !p.inStock ? 'disabled' : '';
+const outBadge = !p.inStock
+  ? '<div class="badge out">OUT OF STOCK</div>'
+  : '';
+
+card.innerHTML = `
+  <div class="image-wrap">
+    ${outBadge}
+    <img src="${p.img}" alt="${escapeHtml(p.name)}">
+  </div>
+
+  <div class="meta">
+    <div class="title">${escapeHtml(p.name)}</div>
+    <div class="price">${formatEUR(p.price)}</div>
+  </div>
+
+  <div class="controls">
+    <div class="qty-controls">
+      <button class="btn dec" data-id="${p.id}" ${disabled}>−</button>
+      <div class="qty" id="qty-${p.id}">0</div>
+      <button class="btn inc" data-id="${p.id}" ${disabled}>+</button>
+    </div>
+    <button class="btn primary add" data-id="${p.id}" ${disabled}>
+      ${p.inStock ? 'Добавить' : 'Нет в наличии'}
+    </button>
+  </div>
+`;
+
     container.appendChild(card);
   });
 
@@ -81,7 +111,7 @@ function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','
 /* CART OPERATIONS */
 function addToCart(productId, delta){
   const product = PRODUCTS.find(p=>p.id===productId);
-  if(!product) return;
+  if(!product || !product.inStock) return;
   const entry = CART.items[productId] || { product, qty:0 };
   entry.qty = Math.max(0, entry.qty + delta);
   if(entry.qty === 0) delete CART.items[productId];
@@ -137,7 +167,7 @@ function renderCartItems(){
       <img src="${e.product.img}" alt="${escapeHtml(e.product.name)}" />
       <div style="flex:1">
         <div style="font-weight:700">${escapeHtml(e.product.name)}</div>
-        <div class="muted">${escapeHtml(e.product.name)} x${e.qty} — ${formatEUR(e.product.price * e.qty)}</div>
+         <div class="muted">x${e.qty} — ${formatEUR(e.product.price * e.qty)}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
         <div class="qty-controls">
