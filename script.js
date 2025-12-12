@@ -345,28 +345,27 @@ async function applyPromo() {
 
     appliedPromo = data;
 
+    const cartSubtotal = CART.totalEUR;
     const discount = calcDiscount(cartSubtotal, appliedPromo);
 
-msg.textContent =
-  `Промокод ${code} — ${appliedPromo.value}% (−${discount.toFixed(2)}€)`;
-
-msg.classList.add('success');
+    msg.textContent =
+      `Промокод ${code} — −${appliedPromo.value}% (экономия ${discount.toFixed(2)}€)`;
 
     msg.classList.add('success');
 
-    // блокируем повторное применение
     input.disabled = true;
     document.getElementById('apply-promo-btn').disabled = true;
 
     recalcCart();
-  renderCartItems();
-  updateFormTotalsIfVisible();
+    renderCartItems();
+    updateFormTotalsIfVisible();
 
   } catch (e) {
     msg.textContent = 'Ошибка сервера';
     msg.classList.add('error');
   }
 }
+
 
 /* Send via Vercel backend */
 async function sendOrderToBackend(payload){
