@@ -15,7 +15,7 @@ const DELIVERY_FEE = 5.00;
 // PRODUCTS
 const PRODUCTS = [
   // CHERRY
-  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
+  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 13.5, img: "img/compact_cherry.png",        inStock: false, isNew: false },
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 13,   img: "img/slims_cherry.png",          inStock: true, isNew: true },
   { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 115,  img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
   { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 120,  img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
