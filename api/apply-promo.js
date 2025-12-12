@@ -3,6 +3,11 @@ import { Redis } from '@upstash/redis';
 const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
+    console.log(
+  'PROMO typeof:',
+  typeof process.env.PROMO_CODES_JSON,
+  process.env.PROMO_CODES_JSON
+);
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -41,9 +46,5 @@ export default async function handler(req, res) {
     type: promo.type,   // percent | fixed
     value: promo.value
   });
+  
 }
-console.log(
-  'PROMO typeof:',
-  typeof process.env.PROMO_CODES_JSON,
-  process.env.PROMO_CODES_JSON
-);
