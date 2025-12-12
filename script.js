@@ -15,10 +15,10 @@ const DELIVERY_FEE = 5.00;
 // PRODUCTS
 const PRODUCTS = [
   // CHERRY
-  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 13.5, img: "img/compact_cherry.png",        inStock: false, isNew: false },
+  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 13,   img: "img/slims_cherry.png",          inStock: true, isNew: true },
   { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 115,  img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
-  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 120,  img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
+  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 110,  img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
 
   // BROWN
   { id: "brown-compact-single",   name: "Chapman Compact Brown",         price: 11,   img: "img/compact_brown.png",         inStock: true, isNew: false },
@@ -30,21 +30,20 @@ const PRODUCTS = [
 
   // VANILLA
   { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 13,   img: "img/slims_vanilla.png",         inStock: true, isNew: false },
-  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 120,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: false },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
   { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 13,   img: "img/slims_iceberry.png",        inStock: true, isNew: false },
-  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 120,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: false },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 110,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: false },
 
   // GREEN
   { id: "green-slims-single",     name: "Chapman Slims Green",           price: 13,   img: "img/slims_green.png",           inStock: true, isNew: false },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 120,  img: "img/slims_green_x10.png",       inStock: true, isNew: false }
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 110,  img: "img/slims_green_x10.png",       inStock: true, isNew: false }
 ];
 
 
 
-// Placeholder: replace with your deployed Vercel project URL (no trailing slash)
-const VERCEL_API_BASE = "https://chapman-shop.vercel.app"; // <- REPLACE THIS
+const VERCEL_API_BASE = "https://chapman-shop.vercel.app"; 
 
 // SEND_MODE: 'auto' uses WebApp.sendData when available, otherwise backend
 // 'webapp' forces sendData, 'backend' forces fetch to Vercel
