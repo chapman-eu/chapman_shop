@@ -29,16 +29,16 @@ const PRODUCTS = [
   { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 110,  img: "img/compact_grape_x10.png",     inStock: true, isNew: true },
 
   // VANILLA
-  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 13,   img: "img/slims_vanilla.png",         inStock: true, isNew: false },
-  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: false },
+  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 13,   img: "img/slims_vanilla.png",         inStock: true, isNew: true },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: true },
 
   // ICEBERRY
-  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 13,   img: "img/slims_iceberry.png",        inStock: true, isNew: false },
-  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 110,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: false },
+  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 13,   img: "img/slims_iceberry.png",        inStock: true, isNew: true },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 110,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: true },
 
   // GREEN
-  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 13,   img: "img/slims_green.png",           inStock: true, isNew: false },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 110,  img: "img/slims_green_x10.png",       inStock: true, isNew: false }
+  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 13,   img: "img/slims_green.png",           inStock: true, isNew: true },
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 110,  img: "img/slims_green_x10.png",       inStock: true, isNew: true }
 ];
 
 
