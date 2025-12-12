@@ -72,9 +72,15 @@ const outBadge = !p.inStock
   ? '<div class="badge out">OUT OF STOCK</div>'
   : '';
 
+const newBadge = p.isNew
+  ? '<div class="badge new">NEW</div>'
+  : '';
+
+
 card.innerHTML = `
   <div class="image-wrap">
     ${outBadge}
+    ${newBadge}
     <img src="${p.img}" alt="${escapeHtml(p.name)}">
   </div>
 
