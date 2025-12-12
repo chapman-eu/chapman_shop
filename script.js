@@ -460,12 +460,23 @@ function validateCheckoutForm(){
 function openCheckoutForm(){
   const form = $('#checkout-form');
   if(!form) return;
+
   $('#cart-actions').classList.add('hidden');
   form.classList.remove('hidden');
-  form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  // 🔥 КРИТИЧНО
+  const panel = $('#cart-panel');
+  panel.scrollTop = 0;
+
+  // убираем автофокус
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+
   syncFormFieldsVisibility();
   updateFormTotalsIfVisible();
 }
+
 
 function closeCheckoutForm(){
   const form = $('#checkout-form');
@@ -581,7 +592,7 @@ function setupUI(){
     if(CART.totalItems === 0){ alert('Добавьте товар в корзину'); return; }
     openCheckoutForm();
   });
-
+  
   const fulfillSelect = $('#field-fulfill');
   if(fulfillSelect) fulfillSelect.addEventListener('change', syncFormFieldsVisibility);
 
@@ -604,14 +615,23 @@ function setupUI(){
 
 function showCart(show){
   const panel = $('#cart-panel');
+
   if(show){
+    document.body.classList.add('locked');
+
     panel.classList.remove('hidden');
     panel.setAttribute('aria-hidden','false');
+
+    panel.scrollTop = 0;
+    if (document.activeElement) document.activeElement.blur();
   }else{
+    document.body.classList.remove('locked');
+
     panel.classList.add('hidden');
     panel.setAttribute('aria-hidden','true');
   }
 }
+
 
 function clearCart(){
   CART.items = {};
@@ -624,7 +644,7 @@ function clearCart(){
     form.querySelectorAll('input, textarea, select').forEach(el=>{
       if(el.type === 'select-one') {
         if(el.id === 'field-payment') el.value = el.querySelector('option') ? el.querySelector('option').value : '';
-        if(el.id === 'field-fulfill') el.value = 'delivery';
+        if(el.id === 'field-fulfill') el.value = 'pickup';
         else el.value = '';
       } else {
         el.value = '';
