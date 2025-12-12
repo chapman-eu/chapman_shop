@@ -156,8 +156,9 @@ function recalcCart(){
   CART.totalEUR = totalEUR;
   const delivery = effectiveDeliveryFee();
 
-  let sumWithDelivery = totalEUR + delivery;
-  sumWithDelivery = applyPromoDiscount(sumWithDelivery);
+  let discountedItems = applyPromoDiscount(totalEUR);
+let sumWithDelivery = discountedItems + delivery;
+
 
   const displayedTotal = +sumWithDelivery.toFixed(2);
 
@@ -349,12 +350,17 @@ async function applyPromo() {
 }
 
 /* Send via Vercel backend */
-async function sendOrderToBackend(orderText){
+async function sendOrderToBackend(payload){
   try{
     const resp = await fetch(`${VERCEL_API_BASE}/api/sendOrder`, {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ order: orderText, source: 'web' })
+      body: JSON.stringify({
+  order: payload.order,
+  promo: payload.promo,
+  source: 'web'
+})
+
     });
     return await resp.json();
   }catch(err){
@@ -376,7 +382,11 @@ async function dispatchOrder(orderObj){
     }
   }
   // Default: backend
-  const res = await sendOrderToBackend(orderText);
+  const res = await sendOrderToBackend({
+  order: orderText,
+  promo: orderObj.promo
+});
+
   return res;
 }
 
@@ -478,8 +488,9 @@ function updateFormTotalsIfVisible(){
   const delivery = effectiveDeliveryFee();
   if($('#form-total-items')) $('#form-total-items').textContent = CART.totalItems;
   if($('#form-delivery-fee')) $('#form-delivery-fee').textContent = formatEUR(delivery);
-  let total = CART.totalEUR + delivery;
-total = applyPromoDiscount(total);
+  let discountedItems = applyPromoDiscount(CART.totalEUR);
+let total = discountedItems + delivery;
+
 
 if($('#form-total-eur'))
   $('#form-total-eur').textContent = formatEUR(total);
