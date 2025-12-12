@@ -8,19 +8,30 @@ const PROMOS = {
 };
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST')
+  // ✅ CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   const { code } = req.body;
-  if (!code)
+  if (!code) {
     return res.status(400).json({ error: 'Promo code required' });
+  }
 
   const promo = PROMOS[code];
-  if (!promo)
+  if (!promo) {
     return res.status(404).json({ error: 'Invalid promo code' });
+  }
 
   const left = await redis.get(`promo:${code}`);
-
   if (left === null || Number(left) <= 0) {
     return res.status(410).json({ error: 'Promo code exhausted' });
   }

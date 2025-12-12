@@ -329,7 +329,7 @@ async function applyPromo() {
   msg.className = 'promo-message';
 
   try {
-    const res = await fetch('/api/apply-promo', {
+    const res = await fetch(`${VERCEL_API_BASE}/api/apply-promo`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code })
