@@ -77,6 +77,19 @@ function applyPromoDiscount(sum) {
 
   return Math.max(0, +discounted.toFixed(2));
 }
+function calcDiscount(subtotal, promo) {
+  if (!promo) return 0;
+
+  if (promo.type === 'percent') {
+    return subtotal * promo.value / 100;
+  }
+
+  if (promo.type === 'fixed') {
+    return Math.min(promo.value, subtotal);
+  }
+
+  return 0;
+}
 
 
 /* RENDER PRODUCTS */
@@ -332,7 +345,13 @@ async function applyPromo() {
 
     appliedPromo = data;
 
-    msg.textContent = `Промокод ${code} применён`;
+    const discount = calcDiscount(cartSubtotal, appliedPromo);
+
+msg.textContent =
+  `Промокод ${code} — ${appliedPromo.value}% (−${discount.toFixed(2)}€)`;
+
+msg.classList.add('success');
+
     msg.classList.add('success');
 
     // блокируем повторное применение
