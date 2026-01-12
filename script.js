@@ -15,38 +15,37 @@ const DELIVERY_FEE = 5.00;
 // PRODUCTS
 const PRODUCTS = [
   // CHERRY
-  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 15, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
-  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 10, img: "img/compact_cherry.png",        inStock: true, isNew: false },
-  { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 11,5,   img: "img/slims_cherry.png",          inStock: true, isNew: true },
-  { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90,  img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
-  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 110,  img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
-  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 125,  img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
+  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 15, oldPrice: 17.5, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
+  { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 10, oldPrice: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
+  { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 11.5, oldPrice: 13, img: "img/slims_cherry.png",          inStock: true, isNew: true },
+  { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
+  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 110, oldPrice: 110, img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
+  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 125, oldPrice: 150, img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
 
   // BROWN
-  { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 15,   img: "img/kingsize_brown.png",         inStock: true, isNew: true },
-  { id: "brown-compact-single",   name: "Chapman Compact Brown",         price: 10,   img: "img/compact_brown.png",         inStock: true, isNew: true },
-  { id: "brown-compact-x10",      name: "Chapman Compact Brown (x10)",   price: 90,  img: "img/compact_brown_x10.png",     inStock: true, isNew: false },
-  { id: "brown-kingsize-x10",      name: "Chapman KINGSIZE Brown (x10)",   price: 125,  img: "img/kingsize_brown_x10.png",     inStock: true, isNew: true },
+  { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 15, oldPrice: 17.5, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
+  { id: "brown-compact-single",   name: "Chapman Compact Brown",         price: 10, oldPrice: 11, img: "img/compact_brown.png",         inStock: true, isNew: true },
+  { id: "brown-compact-x10",      name: "Chapman Compact Brown (x10)",   price: 90, oldPrice: 100, img: "img/compact_brown_x10.png",     inStock: true, isNew: false },
+  { id: "brown-kingsize-x10",      name: "Chapman KINGSIZE Brown (x10)",   price: 125, oldPrice: 125, img: "img/kingsize_brown_x10.png",     inStock: true, isNew: true },
 
   // GRAPE
-  { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 10, img: "img/compact_grape.png",         inStock: true, isNew: true },
-  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 90,  img: "img/compact_grape_x10.png",     inStock: false, isNew: true },
+  { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 10, oldPrice: 12.5, img: "img/compact_grape.png",         inStock: true, isNew: true },
+  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 90, oldPrice: 110, img: "img/compact_grape_x10.png",     inStock: false, isNew: true },
 
   // VANILLA
-  { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 15,   img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
-  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 13,   img: "img/slims_vanilla.png",         inStock: true, isNew: true },
-  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110,  img: "img/slims_vanilla_x10.png",     inStock: true, isNew: true },
-  { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 125,  img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
+  { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 15, oldPrice: 17.5, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
+  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 11.5, oldPrice: 13, img: "img/slims_vanilla.png",         inStock: true, isNew: true },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: true, isNew: true },
+  { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 125, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
-  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 11,5,   img: "img/slims_iceberry.png",        inStock: true, isNew: true },
-  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 110,  img: "img/slims_iceberry_x10.png",    inStock: true, isNew: true },
+  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 11.5, oldPrice: 13, img: "img/slims_iceberry.png",        inStock: true, isNew: true },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 110, oldPrice: 110, img: "img/slims_iceberry_x10.png",    inStock: true, isNew: true },
 
   // GREEN
-  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 11,5,   img: "img/slims_green.png",           inStock: true, isNew: true },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 110,  img: "img/slims_green_x10.png",       inStock: true, isNew: true }
+  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 11.5, oldPrice: 13, img: "img/slims_green.png",           inStock: true, isNew: true },
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 110, oldPrice: 110, img: "img/slims_green_x10.png",       inStock: true, isNew: true }
 ];
-
 
 
 const VERCEL_API_BASE = "https://chapman-shop.vercel.app"; 
@@ -106,39 +105,43 @@ function renderProducts(){
     const card = document.createElement('article');
     card.className = 'card';
     const disabled = !p.inStock ? 'disabled' : '';
-const outBadge = !p.inStock
-  ? '<div class="badge out">OUT OF STOCK</div>'
-  : '';
+    const outBadge = !p.inStock ? '<div class="badge out">OUT OF STOCK</div>' : '';
+    const newBadge = p.isNew ? '<div class="badge new">NEW</div>' : '';
 
-const newBadge = p.isNew
-  ? '<div class="badge new">NEW</div>'
-  : '';
+    // скидка в процентах
+    let discountHTML = '';
+    if(p.oldPrice && p.oldPrice > p.price){
+      const percent = Math.round((p.oldPrice - p.price) / p.oldPrice * 100);
+      discountHTML = `<div class="discount-badge">−${percent}%</div>`;
+    }
 
+    card.innerHTML = `
+      <div class="image-wrap">
+        ${outBadge}
+        ${newBadge}
+        ${discountHTML}
+        <img src="${p.img}" alt="${escapeHtml(p.name)}">
+      </div>
 
-card.innerHTML = `
-  <div class="image-wrap">
-    ${outBadge}
-    ${newBadge}
-    <img src="${p.img}" alt="${escapeHtml(p.name)}">
-  </div>
+      <div class="meta">
+        <div class="title">${escapeHtml(p.name)}</div>
+        <div class="price">
+          ${formatEUR(p.price)}
+          ${p.oldPrice && p.oldPrice > p.price ? `<span class="old-price">${formatEUR(p.oldPrice)}</span>` : ''}
+        </div>
+      </div>
 
-  <div class="meta">
-    <div class="title">${escapeHtml(p.name)}</div>
-    <div class="price">${formatEUR(p.price)}</div>
-  </div>
-
-  <div class="controls">
-    <div class="qty-controls">
-      <button class="btn dec" data-id="${p.id}" ${disabled}>−</button>
-      <div class="qty" id="qty-${p.id}">0</div>
-      <button class="btn inc" data-id="${p.id}" ${disabled}>+</button>
-    </div>
-    <button class="btn primary add" data-id="${p.id}" ${disabled}>
-      ${p.inStock ? 'Добавить' : 'Нет в наличии'}
-    </button>
-  </div>
-`;
-
+      <div class="controls">
+        <div class="qty-controls">
+          <button class="btn dec" data-id="${p.id}" ${disabled}>−</button>
+          <div class="qty" id="qty-${p.id}">0</div>
+          <button class="btn inc" data-id="${p.id}" ${disabled}>+</button>
+        </div>
+        <button class="btn primary add" data-id="${p.id}" ${disabled}>
+          ${p.inStock ? 'Добавить' : 'Нет в наличии'}
+        </button>
+      </div>
+    `;
     container.appendChild(card);
   });
 
