@@ -286,3 +286,22 @@ body.locked {
 #open-cart:active {
   transform: scale(0.96);
 }
+.old-price {
+  text-decoration: line-through;
+  color: var(--muted);
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ff4c4c;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.8em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 2;
+}
