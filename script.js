@@ -700,7 +700,9 @@ function setupTelegramChannelButton() {
 /* Init */
 document.addEventListener('DOMContentLoaded', ()=>{
   setupUI();
+  setupTelegramChannelButton();
 });
+
 
 /* Expose for debugging/testing */
 window.CHAPMAN = { PRODUCTS, CART, addToCart, gatherOrderWithCustomer, dispatchOrder, setSendMode: (m)=>{ SEND_MODE = m } };
