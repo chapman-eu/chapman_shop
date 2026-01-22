@@ -679,6 +679,23 @@ if (promoBtn) promoBtn.disabled = false;
 if (promoMsg) promoMsg.textContent = '';
 
 }
+function setupTelegramChannelButton() {
+  const btn = document.getElementById('tg-channel-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      // ✅ правильный способ для Mini App
+      window.Telegram.WebApp.openTelegramLink(
+        'https://t.me/chapmaneurope'
+      );
+    } else {
+      // обычный браузер
+      window.open('https://t.me/chapmaneurope', '_blank');
+    }
+  });
+}
+
 
 /* Init */
 document.addEventListener('DOMContentLoaded', ()=>{
