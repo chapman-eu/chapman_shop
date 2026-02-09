@@ -15,12 +15,12 @@ const DELIVERY_FEE = 5.00;
 // PRODUCTS
 const PRODUCTS = [
   // CHERRY
-  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 15, oldPrice: 17.5, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
+  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 15, oldPrice: 17.5, img: "img/kingsize_cherry.png",        inStock: false, isNew: true },
   { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 10, oldPrice: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 11.5, oldPrice: 13, img: "img/slims_cherry.png",          inStock: true, isNew: true },
   { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
-  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 110, oldPrice: 110, img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
-  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 125, oldPrice: 150, img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
+  { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 110, oldPrice: 110, img: "img/slims_cherry_x10.png",      inStock: false, isNew: true },
+  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 125, oldPrice: 150, img: "img/kingsize_cherry_x10.png",      inStock: false, isNew: true },
 
   // BROWN
   { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 15, oldPrice: 17.5, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
@@ -34,8 +34,8 @@ const PRODUCTS = [
 
   // VANILLA
   { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 15, oldPrice: 17.5, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
-  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 11.5, oldPrice: 13, img: "img/slims_vanilla.png",         inStock: true, isNew: true },
-  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: true, isNew: true },
+  { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 11.5, oldPrice: 13, img: "img/slims_vanilla.png",         inStock: false, isNew: true },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 110, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: false, isNew: true },
   { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 125, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
