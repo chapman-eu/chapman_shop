@@ -44,7 +44,7 @@ const PRODUCTS = [
 
   // GREEN
   { id: "green-slims-single",     name: "Chapman Slims Green",           price: 9, oldPrice: 11, img: "img/slims_green.png",           inStock: true, isNew: true },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: true, isNew: true }
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: true, isNew: true },
 
      // CLASSIC
   { id: "classic-slims-single",     name: "Chapman Slims Classic",           price: 10, oldPrice: 13, img: "img/slims_classic.png",           inStock: true, isNew: true },
