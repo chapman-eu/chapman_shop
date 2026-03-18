@@ -23,7 +23,7 @@ const PRODUCTS = [
   { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 115, oldPrice: 125, img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
 
   // BROWN
-  { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 13,5, oldPrice: 15, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
+  { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 13.5, oldPrice: 15, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
   { id: "brown-compact-single",   name: "Chapman Compact Brown",         price: 10, oldPrice: 11, img: "img/compact_brown.png",         inStock: true, isNew: true },
   { id: "brown-compact-x10",      name: "Chapman Compact Brown (x10)",   price: 90, oldPrice: 100, img: "img/compact_brown_x10.png",     inStock: true, isNew: false },
   { id: "brown-kingsize-x10",      name: "Chapman KINGSIZE Brown (x10)",   price: 115, oldPrice: 125, img: "img/kingsize_brown_x10.png",     inStock: true, isNew: true },
@@ -33,7 +33,7 @@ const PRODUCTS = [
   { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 90, oldPrice: 110, img: "img/compact_grape_x10.png",     inStock: false, isNew: true },
 
   // VANILLA
-  { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 13,5, oldPrice: 15, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
+  { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 13.5, oldPrice: 15, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
   { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 10, oldPrice: 13, img: "img/slims_vanilla.png",         inStock: true, isNew: true },
   { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 90, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: false, isNew: true },
   { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 115, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
