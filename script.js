@@ -15,7 +15,7 @@ const DELIVERY_FEE = 5.00;
 // PRODUCTS
 const PRODUCTS = [
   // CHERRY
-  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 13,5, oldPrice: 15, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
+  { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 13.5, oldPrice: 15, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
   { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 10, oldPrice: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 9, oldPrice: 13, img: "img/slims_cherry.png",          inStock: true, isNew: true },
   { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
