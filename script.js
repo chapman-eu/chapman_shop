@@ -20,7 +20,7 @@ const PRODUCTS = [
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 9, oldPrice: 13, img: "img/slims_cherry.png",          inStock: true, isNew: true },
   { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: false, isNew: false },
   { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 85, oldPrice: 110, img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
-  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 115, oldPrice: 125, img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
+  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 115, oldPrice: 125, img: "img/kingsize_cherry_x10.png",      inStock: false, isNew: true },
 
   // BROWN
   { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 13.5, oldPrice: 15, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
