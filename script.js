@@ -35,7 +35,7 @@ const PRODUCTS = [
   // VANILLA
   { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 13.5, oldPrice: 15, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
   { id: "vanilla-slims-single",   name: "Chapman Slims Vanilla",         price: 10, oldPrice: 13, img: "img/slims_vanilla.png",         inStock: true, isNew: true },
-  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 90, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: false, isNew: true },
+  { id: "vanilla-slims-x10",      name: "Chapman Slims Vanilla (x10)",   price: 90, oldPrice: 110, img: "img/slims_vanilla_x10.png",     inStock: true, isNew: true },
   { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 115, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
