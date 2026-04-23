@@ -39,12 +39,12 @@ const PRODUCTS = [
   { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 115, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
-  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 9, oldPrice: 11, img: "img/slims_iceberry.png",        inStock: true, isNew: true },
-  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 85, oldPrice: 100, img: "img/slims_iceberry_x10.png",    inStock: true, isNew: true },
+  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 9, oldPrice: 11, img: "img/slims_iceberry.png",        inStock: false, isNew: true },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 85, oldPrice: 100, img: "img/slims_iceberry_x10.png",    inStock: false, isNew: true },
 
   // GREEN
-  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 9, oldPrice: 11, img: "img/slims_green.png",           inStock: true, isNew: true },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: true, isNew: true },
+  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 9, oldPrice: 11, img: "img/slims_green.png",           inStock: false, isNew: true },
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: false, isNew: true },
 
      // CLASSIC
   { id: "classic-slims-single",     name: "Chapman Slims Classic",           price: 10, oldPrice: 13, img: "img/slims_classic.png",           inStock: true, isNew: true },
