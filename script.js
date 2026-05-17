@@ -18,9 +18,9 @@ const PRODUCTS = [
   { id: "cherry-kingsize-single",  name: "Chapman KINGSIZE Cherry",        price: 13.5, oldPrice: 15, img: "img/kingsize_cherry.png",        inStock: true, isNew: true },
   { id: "cherry-compact-single",  name: "Chapman Compact Cherry",        price: 10, oldPrice: 13.5, img: "img/compact_cherry.png",        inStock: true, isNew: false },
   { id: "cherry-slims-single",    name: "Chapman Slims Cherry",          price: 9, oldPrice: 13, img: "img/slims_cherry.png",          inStock: true, isNew: true },
-  { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: false, isNew: false },
+  { id: "cherry-compact-x10",     name: "Chapman Compact Cherry (x10)",  price: 90, oldPrice: 115, img: "img/compact_cherry_x10.png",    inStock: true, isNew: false },
   { id: "cherry-slims-x10",       name: "Chapman Slims Cherry (x10)",    price: 85, oldPrice: 110, img: "img/slims_cherry_x10.png",      inStock: true, isNew: true },
-  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 115, oldPrice: 125, img: "img/kingsize_cherry_x10.png",      inStock: false, isNew: true },
+  { id: "cherry-kingsize-x10",       name: "Chapman KINGSIZE Cherry (x10)",    price: 115, oldPrice: 125, img: "img/kingsize_cherry_x10.png",      inStock: true, isNew: true },
 
   // BROWN
   { id: "brown-kingsize-single",   name: "Chapman KINGSIZE Brown",         price: 13.5, oldPrice: 15, img: "img/kingsize_brown.png",         inStock: true, isNew: true },
@@ -30,7 +30,7 @@ const PRODUCTS = [
 
   // GRAPE
   { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 10, oldPrice: 12.5, img: "img/compact_grape.png",         inStock: true, isNew: true },
-  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 90, oldPrice: 110, img: "img/compact_grape_x10.png",     inStock: false, isNew: true },
+  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 90, oldPrice: 110, img: "img/compact_grape_x10.png",     inStock: true, isNew: true },
 
   // VANILLA
   { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 13.5, oldPrice: 15, img: "img/kingsize_vanilla.png",         inStock: true, isNew: true },
@@ -39,12 +39,12 @@ const PRODUCTS = [
   { id: "vanilla-kingsize-x10",      name: "Chapman KINGSIZE Vanilla (x10)",   price: 115, oldPrice: 125, img: "img/kingsize_vanilla_x10.png",     inStock: true, isNew: false },
 
   // ICEBERRY
-  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 9, oldPrice: 11, img: "img/slims_iceberry.png",        inStock: false, isNew: true },
-  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 85, oldPrice: 100, img: "img/slims_iceberry_x10.png",    inStock: false, isNew: true },
+  { id: "iceberry-slims-single",  name: "Chapman Slims IceBerry",        price: 9, oldPrice: 11, img: "img/slims_iceberry.png",        inStock: true, isNew: true },
+  { id: "iceberry-slims-x10",     name: "Chapman Slims IceBerry (x10)",  price: 85, oldPrice: 100, img: "img/slims_iceberry_x10.png",    inStock: true, isNew: true },
 
   // GREEN
-  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 9, oldPrice: 11, img: "img/slims_green.png",           inStock: false, isNew: true },
-  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: false, isNew: true },
+  { id: "green-slims-single",     name: "Chapman Slims Green",           price: 9, oldPrice: 11, img: "img/slims_green.png",           inStock: true, isNew: true },
+  { id: "green-slims-x10",        name: "Chapman Slims Green (x10)",     price: 85, oldPrice: 100, img: "img/slims_green_x10.png",       inStock: true, isNew: true },
 
      // CLASSIC
   { id: "classic-slims-single",     name: "Chapman Slims Classic",           price: 10, oldPrice: 13, img: "img/slims_classic.png",           inStock: true, isNew: true },
