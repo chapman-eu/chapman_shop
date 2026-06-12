@@ -29,8 +29,8 @@ const PRODUCTS = [
   { id: "brown-kingsize-x10",      name: "Chapman KINGSIZE Brown (x10)",   price: 125, oldPrice: 130, img: "img/kingsize_brown_x10.png",     inStock: true, isNew: true },
 
   // GRAPE
-  { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 12, oldPrice: 13.5, img: "img/compact_grape.png",         inStock: true, isNew: true },
-  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 115, oldPrice: 125, img: "img/compact_grape_x10.png",     inStock: true, isNew: true },
+  { id: "grape-compact-single",   name: "Chapman Compact Grape",         price: 12, oldPrice: 13.5, img: "img/compact_grape.png",         inStock: false, isNew: true },
+  { id: "grape-compact-x10",      name: "Chapman Compact Grape (x10)",   price: 115, oldPrice: 125, img: "img/compact_grape_x10.png",     inStock: false, isNew: true },
 
   // VANILLA
   { id: "vanilla-kingsize-single",   name: "Chapman KINGSIZE Vanilla",         price: 13.5, oldPrice: 15, img: "img/kingsize_vanilla.png",         inStock: false, isNew: true },
